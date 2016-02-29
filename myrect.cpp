@@ -1,6 +1,7 @@
 #include "MyRect.h"
 #include <QDebug>
 #include "bullet.h"
+#include "enemy.h"
 #include <QGraphicsScene>
 #include <QKeyEvent>
 
@@ -9,11 +10,14 @@ void MyRect::keyPressEvent(QKeyEvent *event){
     //Key pressed stored inside event
 
     if (event->key() == Qt::Key_Left){
-        setPos(x()-10,y()); //Move left 10 units
+        if(pos().x() > 0) //Cannot leave left side of screen
+            setPos(x()-10,y()); //Move left 10 units
     }
 
     else if(event->key() == Qt::Key_Right){
-        setPos(x()+10,y());
+
+        if(pos().x()+100<800) //Only move right if not leaving screen
+            setPos(x()+10,y());
     }
 
     else if(event->key() == Qt::Key_Up){
@@ -33,4 +37,13 @@ void MyRect::keyPressEvent(QKeyEvent *event){
 
 
     }
+}
+
+void MyRect::spawn(){
+
+    //Create an enemy
+    Enemy *enemy =  new Enemy();
+    scene()->addItem(enemy); //Scene is global method returning pointer to scene
+
+
 }
